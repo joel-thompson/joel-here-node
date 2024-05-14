@@ -23,7 +23,11 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 app.get("/api/users", (_req: Request, res: Response) => {
-  res.json([{ id: 1, name: "John Doe" }]);
+  res.json([
+    { id: 1, name: "John Doe", email: "john@example.com" },
+    { id: 2, name: "Jane Smith", email: "jane@example.com" },
+    { id: 3, name: "Bob Johnson", email: "bob@example.com" },
+  ]);
 });
 
 app.listen(port, () => {
