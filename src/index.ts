@@ -30,11 +30,71 @@ app.get("/api/users", (_req: Request, res: Response) => {
   ]);
 });
 
-app.post("/api/basicgpt", (req: Request, res: Response) => {
-  // req.body
-  // const sysPrompt = req.body.systemPrompt;
-  // const prompt = req.body.prompt;
-  res.json({ message: req.body.prompt });
+interface StoryResponse {
+  choices?: [{ message: { content: string } }];
+}
+
+app.post("/api/basicgpt", async (req: Request, res: Response) => {
+  const sysPrompt = req.body.systemPrompt;
+  const prompt = req.body.prompt;
+  const apiKey = process.env.JOEL_HERE_OPENAI_API_KEY;
+
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      max_tokens: 300,
+      messages: [
+        {
+          role: "system",
+          content: sysPrompt,
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    // Try to extract the error message from the response body
+    let errorMessage = "Failed to fetch"; // Default error message
+    try {
+      const errorBody = await response.json();
+      if (
+        typeof errorBody === "object" &&
+        errorBody !== null &&
+        "error" in errorBody
+      ) {
+        const error = errorBody.error as { [key: string]: unknown };
+        if ("message" in error) {
+          errorMessage = error.message as string;
+        }
+      }
+    } catch (e) {
+      errorMessage = "Error parsing error response:";
+      console.error("Error parsing error response:", e);
+    }
+
+    return res.status(400).json({ message: errorMessage });
+  }
+
+  const data = await response.json();
+  let knownData: StoryResponse = {};
+
+  if (typeof data === "object" && data !== null) {
+    const potentialData = data as { [key: string]: unknown };
+    if (typeof potentialData.choices === "object") {
+      knownData = potentialData as StoryResponse;
+    }
+  }
+
+  res.json({ message: knownData?.choices?.[0].message.content });
 });
 
 // Catch-all middleware for 404 Not Found
