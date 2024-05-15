@@ -1,1 +1,0 @@
-// todo, move the request for /api/basicgpt to here
