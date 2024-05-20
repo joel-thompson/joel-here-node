@@ -2,8 +2,16 @@ interface ApiResponse {
   choices?: [{ message: { content: string } }];
 }
 
-export const postBasicGpt = async (sysPrompt: string, prompt: string) => {
+export const postBasicGpt = async (sysPrompt: string, conversation: string[]) => {
   const apiKey = process.env.JOEL_HERE_OPENAI_API_KEY;
+
+  const messages = conversation.map((msg, i) => {
+    return {
+      role: i % 2 === 0 ? "user" : "system",
+      content: msg,
+    };
+  });
+
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -18,10 +26,7 @@ export const postBasicGpt = async (sysPrompt: string, prompt: string) => {
           role: "system",
           content: sysPrompt,
         },
-        {
-          role: "user",
-          content: prompt,
-        },
+        ...messages,
       ],
     }),
   });
