@@ -5,7 +5,7 @@ interface ApiResponse {
 }
 
 export const getTechPlanFeedback = async (
-  markdownText: string,
+  inputText: string,
   requirements: string
 ) => {
   const apiKey = process.env.JOEL_HERE_OPENAI_API_KEY;
@@ -24,7 +24,7 @@ export const getTechPlanFeedback = async (
           role: "system",
           content:
             "Here is a technical plan written in markdown:\n\n" +
-            markdownText +
+            inputText +
             "\n\nRequirements:\n" +
             requirements +
             "\n\nPlease provide feedback on what could be missing from the document.",

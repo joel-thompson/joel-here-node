@@ -41,8 +41,8 @@ app.post("/api/basicgpt", async (req: Request, res: Response) => {
 });
 
 app.post("/api/get-techplan-feedback", async (req: Request, res: Response) => {
-  const { markdownText, requirements } = req.body;
-  const resp = await getTechPlanFeedback(markdownText, requirements);
+  const { inputText, requirements } = req.body;
+  const resp = await getTechPlanFeedback(inputText, requirements);
   res.status(resp.status).json({ feedback: resp.feedback });
 });
 
