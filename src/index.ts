@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { postBasicGpt } from "./openai/postBasicGpt";
+import { getTechPlanFeedback } from "./openai/getTechPlanFeedback";
 
 dotenv.config();
 const app = express();
@@ -37,6 +38,12 @@ app.post("/api/basicgpt", async (req: Request, res: Response) => {
 
   const resp = await postBasicGpt(sysPrompt, conversation);
   res.status(resp.status).json({ message: resp.message });
+});
+
+app.post("/api/get-techplan-feedback", async (req: Request, res: Response) => {
+  const { markdownText, requirements } = req.body;
+  const resp = await getTechPlanFeedback(markdownText, requirements);
+  res.status(resp.status).json({ feedback: resp.feedback });
 });
 
 // Catch-all middleware for 404 Not Found
