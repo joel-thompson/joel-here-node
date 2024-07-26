@@ -1,5 +1,7 @@
 // import fetch from "node-fetch";
 
+import { techPlanPrompt } from "../prompts/prompts";
+
 interface ApiResponse {
   choices?: [{ message: { content: string } }];
 }
@@ -22,12 +24,7 @@ export const getTechPlanFeedback = async (
       messages: [
         {
           role: "system",
-          content:
-            "Here is a technical plan written in markdown:\n\n" +
-            inputText +
-            "\n\nRequirements:\n" +
-            requirements +
-            "\n\nPlease provide feedback on what could be missing from the document.",
+          content: techPlanPrompt(inputText, requirements),
         },
       ],
     }),
