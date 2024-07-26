@@ -33,10 +33,9 @@ app.get("/api/users", (_req: Request, res: Response) => {
 });
 
 app.post("/api/basicgpt", async (req: Request, res: Response) => {
-  const sysPrompt = req.body.systemPrompt;
   const conversation = req.body.conversation;
 
-  const resp = await postBasicGpt(sysPrompt, conversation);
+  const resp = await postBasicGpt(conversation);
   res.status(resp.status).json({ message: resp.message });
 });
 

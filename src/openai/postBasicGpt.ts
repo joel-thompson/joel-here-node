@@ -1,8 +1,10 @@
+import { constructo } from "../prompts/prompts";
+
 interface ApiResponse {
   choices?: [{ message: { content: string } }];
 }
 
-export const postBasicGpt = async (sysPrompt: string, conversation: any) => {
+export const postBasicGpt = async (conversation: any) => {
   const apiKey = process.env.JOEL_HERE_OPENAI_API_KEY;
 
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -17,7 +19,7 @@ export const postBasicGpt = async (sysPrompt: string, conversation: any) => {
       messages: [
         {
           role: "system",
-          content: sysPrompt,
+          content: constructo(),
         },
         ...conversation,
       ],
