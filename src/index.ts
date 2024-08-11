@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { postBasicGpt } from "./openai/postBasicGpt";
 import { getTechPlanFeedback } from "./openai/getTechPlanFeedback";
+import { mathReasoning } from "./openai/mathReasoning";
 
 dotenv.config();
 const app = express();
@@ -43,6 +44,12 @@ app.post("/api/get-techplan-feedback", async (req: Request, res: Response) => {
   const { inputText, requirements } = req.body;
   const resp = await getTechPlanFeedback(inputText, requirements);
   res.status(resp.status).json({ feedback: resp.feedback });
+});
+
+app.post("/api/math-reasoning", async (req: Request, res: Response) => {
+  const { inputText } = req.body;
+  const resp = await mathReasoning(inputText);
+  res.status(resp.status).json(resp.data);
 });
 
 // Catch-all middleware for 404 Not Found
