@@ -4,6 +4,7 @@ import cors from "cors";
 import { postBasicGpt } from "./openai/postBasicGpt";
 import { getTechPlanFeedback } from "./openai/getTechPlanFeedback";
 import { mathReasoning } from "./openai/mathReasoning";
+import { basicConv } from "./openai/basicConv";
 
 dotenv.config();
 const app = express();
@@ -52,9 +53,16 @@ app.post("/api/math-reasoning", async (req: Request, res: Response) => {
   res.status(resp.status).json(resp.data);
 });
 
+app.post("/api/basic-conv", async (req: Request, res: Response) => {
+  const { conversation } = req.body;
+  const resp = await basicConv(conversation);
+  res.status(resp.status).json(resp.data);
+});
+
 // Catch-all middleware for 404 Not Found
 app.use((req: Request, res: Response, _next: NextFunction) => {
-  res.status(404).json({ message: `Route '${req.url}' not found` });
+  console.log(`Route '${req.url}' not found - 404`);
+  res.status(404).json({ message: `Route '${req.url}' not found - 404` });
 });
 
 // Error-handling middleware
