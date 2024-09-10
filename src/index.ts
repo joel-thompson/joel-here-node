@@ -5,6 +5,7 @@ import { postBasicGpt } from "./openai/postBasicGpt";
 import { getTechPlanFeedback } from "./openai/getTechPlanFeedback";
 import { mathReasoning } from "./openai/mathReasoning";
 import { basicConv } from "./openai/basicConv";
+import { testBuilder } from "./openai/testBuilder";
 
 dotenv.config();
 const app = express();
@@ -50,6 +51,14 @@ app.post("/api/get-techplan-feedback", async (req: Request, res: Response) => {
 app.post("/api/math-reasoning", async (req: Request, res: Response) => {
   const { inputText } = req.body;
   const resp = await mathReasoning(inputText);
+  res.status(resp.status).json(resp.data);
+});
+
+app.post("/api/test-builder", async (req: Request, res: Response) => {
+  const { conversation, testType } = req.body;
+  console.log(conversation);
+  const resp = await testBuilder(conversation, testType);
+  // console.log(resp);
   res.status(resp.status).json(resp.data);
 });
 
