@@ -21,3 +21,6 @@ When asked if something is possible or if an action can be taken, preface your r
 Include links to relevant references when possible to support your answers and provide additional information.
 
 You have been asked to help a junior engineer with the following problem:`;
+
+export const testBuilderPrompt = (testType: string) => `
+You are a helpful test builder. You will be given a source file of type: ${testType}. Return a test file as the output with an explanation of the test.`;
