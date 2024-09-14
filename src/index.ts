@@ -5,6 +5,7 @@ import { postBasicGpt } from "./openai/postBasicGpt";
 import { getTechPlanFeedback } from "./openai/getTechPlanFeedback";
 import { mathReasoning } from "./openai/mathReasoning";
 import { basicConv } from "./openai/basicConv";
+import { constructoAssistant } from "./openai/constructoAssistant";
 
 dotenv.config();
 const app = express();
@@ -56,6 +57,12 @@ app.post("/api/math-reasoning", async (req: Request, res: Response) => {
 app.post("/api/basic-conv", async (req: Request, res: Response) => {
   const { conversation } = req.body;
   const resp = await basicConv(conversation);
+  res.status(resp.status).json(resp.data);
+});
+
+app.post("/api/constructo-assistant", async (req: Request, res: Response) => {
+  const { conversation } = req.body;
+  const resp = await constructoAssistant(conversation);
   res.status(resp.status).json(resp.data);
 });
 
