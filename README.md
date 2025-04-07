@@ -1,3 +1,5 @@
+This service is no longer being used. Leaving the repo intact for reference only.
+
 # Joel-here-node
 
 This is the backend for my main frontend project joel-here.
